@@ -1,7 +1,8 @@
+
 # Personalized!
 
 # Grab the current date (%D) and time (%T) wrapped in {}: {%D %T}
-DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg[yellow]%}%D %T%{$fg[white]%}}%{$reset_color%}"
+DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg[yellow]%}%D %t%{$fg[white]%}}%{$reset_color%}"
 # Grab the current version of ruby in use (via RVM): [ruby-1.8.7]
 if [ -e ~/.rvm/bin/rvm-prompt ]; then
   DALLAS_CURRENT_RUBY_="%{$fg[white]%}[%{$fg[magenta]%}\$(~/.rvm/bin/rvm-prompt i v)%{$fg[white]%}]%{$reset_color%}"
@@ -30,3 +31,5 @@ ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[cyan]%}✗✗✗"
 
 # Put it all together!
 PROMPT="$DALLAS_CURRENT_TIME_$DALLAS_CURRENT_RUBY_$DALLAS_CURRENT_MACH_$DALLAS_CURRENT_LOCA_ $DALLAS_CURRENT_USER_$DALLAS_PROMPT_CHAR_ "
+
+export ANT_OPTS=-Xmx1g 
