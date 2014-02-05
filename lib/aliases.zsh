@@ -5,6 +5,8 @@
     alias daily='cd ~/workspaces/DailyProgrammer'
     alias acm='cd ~/workspaces/ACM'
     alias scripts='cd ~/workspaces/scripts'
+    alias cfg_zsh='~/.oh-my-zsh'
+    alias cfgs='~/workspaces/config/'
 
 # ------ Bigsky ------ #
     alias bigsky='~/workspaces/wf/bigsky/z_bigsky && source ~/dev/wf/sky/bin/activate'
@@ -20,7 +22,7 @@
     alias mvn='nocorrect mvn'
     alias skyup='pip install -Ur requirements_dev.txt && pip install -Ur requirements.txt'
     alias wfhome='~/workspaces/wf/bigsky/z_bigsky/apps/home/ '
-    alias wfrich='~/workspaces/wf/bigsky/z_bigsky/externals/richapps/ && workon richapps'
+    alias wfrich='~/workspaces/wf/bigsky/z_bigsky/externals/richapps/'
 
 # ------ Build Tools ------ #
     alias basic='ant clean-no-flex stage-no-flex generate-media'
@@ -32,8 +34,8 @@
     alias build_generate='ant -f build_parallel.xml generate-as'
 
 # ------ Web Bones ------ #
-    alias webbones='~/workspaces/wf/web-bones'
-    alias ra2='~/workspaces/wf/bigsky/richapps/richapps/build'
+    alias bones='~/workspaces/wf/web-bones'
+    alias bonediff='git diff WebBones/master'
 
 # ------ Python ------ #
     alias clean_pyc='find . -name \*.pyc -exec rm {} \;'
@@ -196,11 +198,6 @@
     }
     alias pgr='process_get_running'
 
-    # Display a file tree
-    function tree {
-        find $&;{1:-.} -print | sed -e ’s;[^/]*/;|____;g;s;____|; |;g’
-    }
-
 # ------ No Correct ------#
     # alias subl='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 2>&1 > /dev/null &'
     # alias subl='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 > /dev/null 2>&1'
@@ -313,7 +310,8 @@
     # alias python='/usr/bin/python'
     alias chrome="open /Applications/Google\ Chrome.app/" #--args --disable-web-security"
    # alias ctags="`brew --prefix`/bin/ctags"
-    alias diff=colordiff
+    alias diff='colordiff'
+    alias cls='clear'
 
 #------ CD ------ #
     alias ...='cd ../..'
