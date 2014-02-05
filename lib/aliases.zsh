@@ -6,7 +6,7 @@
     alias acm='cd ~/workspaces/ACM'
     alias scripts='cd ~/workspaces/scripts'
     alias cfg_zsh='~/.oh-my-zsh'
-    alias cfgs='~/workspaces/config/'
+    alias cfgs='~/workspaces/configs/'
 
 # ------ Bigsky ------ #
     alias bigsky='~/workspaces/wf/bigsky/z_bigsky && source ~/dev/wf/sky/bin/activate'
