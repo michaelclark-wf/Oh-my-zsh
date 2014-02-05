@@ -257,7 +257,7 @@
     alias mf='mvn_full'
 
     alias mvn_lazy_flex='mvn install -T12 -Plazy,-python-scripts,-js-projects,-generate-media -DskipTests'
-    alias mlf='mvn_full_flex'
+    alias mlf='mvn_lazy_flex'
 
     # I have merged the latest master into my branch. How do I rebuild affected
     #   libraries/modules/applications and run all flex unit tests?
