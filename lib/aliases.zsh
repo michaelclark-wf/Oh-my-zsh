@@ -15,7 +15,7 @@
     alias lgtest='python manage.py test --test-seed=-1 2>&1 |tee  ~/workspaces/wf/test-logs/BigSkyTests_`date +%y.%m.%d_%I:%M%p`.log'
     alias testlogs='ll ~/workspaces/wf/test-logs/'
     alias readlogs='subl ~/workspaces/wf/test-logs/'
-    alias server=' python manage.py ruPnserver 8001'
+    alias server=' python manage.py runserver 8001'
     alias server_nc='python manage.py runserver 8001 --disable_static_caching'
     alias snc='python manage.py runserver 8001 --disable_static_caching'
     alias erasereset=' python tools/erase_reset_data.py'
@@ -133,14 +133,14 @@
     # git_current_branch=`git rev-parse --abbrev-ref HEAD`;
     # gcb=$git_current_branch
     # cb=$git_current_branch
-    # git_current_checksum=`git rev-parse --sq HEAD@{now} | sed_remove_list '\ ' '\*' "'"`;
-    # gchs=$git_current_checksum
+    git_current_checksum=`git rev-parse --sq HEAD@{now} | sed_remove_list '\ ' '\*' "'"`;
+    alias gcks='print $git_current_checksum'
 
     sed_remove_list(){
         sed_format=''
         for arg in $@
         do
-            $sed_format+='s/'$arg'//g;'
+            $sed_format+="s/${arg}//g"
         done
         sed $sed_format
     }
