@@ -21,6 +21,8 @@
     alias erasereset=' python tools/erase_reset_data.py'
     alias mvn='nocorrect mvn'
     alias skyup='pip install -Ur requirements_dev.txt && pip install -Ur requirements.txt'
+    alias skyup-force='pip install -r requirements_dev.txt && pip install -r requirements.txt'
+    alias server-fix='pip uninstall -y PIL;pip uninstall httplib2; pip install httplib2;pip install -Ur requirements_dev.txt; pip install -Ur requirements.txt;git clean -xdf lib'
     alias wfhome='~/workspaces/wf/bigsky/z_bigsky/apps/home/ '
     alias wfrich='~/workspaces/wf/bigsky/z_bigsky/externals/richapps/'
 
@@ -32,15 +34,36 @@
     alias release='ant clean generate-as build-release stage generate-media'
     alias bust='ant -f build_parallel.xml bust-my-cache'
     alias build_generate='ant -f build_parallel.xml generate-as'
-
+    alias bamboo_build='mvn package -T1C -Pci,generate-media,automation,generate -Dpython-testing-cpus=3'
+    alias deploy_home='appcfg.py update -A wf-home . -V'
+    alias deploy_richapps='appcfg.py update -A wf-richapps . -V'
+    alias kill_pip='pip freeze | xargs pip uninstall -y'
 # ------ Web Bones ------ #
     alias bones='~/workspaces/wf/web-bones'
     alias bonediff='git diff WebBones/master'
+    alias start_qa='git push Codebuilders'
+
+    function bone_synch {
+        # fetch latest branches
+        git fetch WebBones;
+        # checkout local master
+        git checkout master;
+        # merge latest changes into local master
+        git merge WebBones/master;
+        # push updated master to repo
+        git push origin;
+        # checkout original branch
+        git checkout $arg[0];
+        # merge updated master
+        git merge master;
+        # push updated branch to repo.
+        git push origin;
+    }
 
 # ------ Python ------ #
     alias clean_pyc='find . -name \*.pyc -exec rm {} \;'
 
-# ------ GAE Tools ------ 
+# ------ GAE Tools ------
     alias start_server=' python manage.py runserver 8001'
     alias remote_console=' python tools/remote_api/console.py --servername=wf-keil.appspot.com --appid=s~wf-keil'
     alias remote_console_s16=' python tools/remote_api/console.py --servername=wf-section16.appspot.com --appid=s~wf-section16'
@@ -55,7 +78,8 @@
     alias mydiff='gd origin/'
     alias skyreset='git reset --hard Bigsky/master' #Reset branch to BigSky/Master branch.
     alias gs='git status'
-
+    alias gist_token='curl -v -u michaelclark-wf -X POST https://api.github.com/authorizations --data "{\"scopes\":[\"gist\"]}"'
+    alias gpo='git push origin'
     # ------ Github Config Commands ------ #
         # sets global alias for git log, also makes log pretty and easier to read.
         # git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
@@ -130,21 +154,22 @@
     }
     alias gda='git_diff_all_remotes'
 
-    # git_current_branch=`git rev-parse --abbrev-ref HEAD`;
-    # gcb=$git_current_branch
-    # cb=$git_current_branch
-    git_current_checksum=`git rev-parse --sq HEAD@{now} | sed_remove_list '\ ' '\*' "'"`;
-    alias gcks='print $git_current_checksum'
 
-    sed_remove_list(){
-        sed_format=''
-        for arg in $@
-        do
-            $sed_format+="s/${arg}//g"
-        done
-        sed $sed_format
-    }
-    alias sr='sed_remove_list'
+    # function sed_remove_list(){
+    #     sed_format=''
+    #     for arg in $@
+    #     do
+    #         $sed_format+='s/'+$arg+'//g'
+    #     done
+    #     sed $sed_format
+    # }
+    # alias sr='sed_remove_list'
+
+    # # git_current_branch=`git rev-parse --abbrev-ref HEAD`;
+    # # gcb=$git_current_branch
+    # # cb=$git_current_branch
+    # alias git_current_checksum=`git rev-parse --sq HEAD@{now} | sed_remove_list '\ ' '\*' "'"`;
+    # alias gcks='print $git_current_checksum'
 
     server_restart_and_bust(){
         print "Stopping Servers..."
@@ -179,6 +204,15 @@
     }
     alias pkl='process_kill_list'
 
+
+    function run_cmd_x_times(){
+        if [ $# -eq 0 ]
+          then
+            echo "No arguments supplied";
+
+        fi
+    }
+
     process_kill_server(){
         query='python manage.py';
         pids=$(process_get_running $query);
@@ -198,6 +232,22 @@
     }
     alias pgr='process_get_running'
 
+    get_process_using_port(){
+        port=$1;
+        pid=$(sudo lsof -i | grep 35729 | awk '{print $2}');
+        if [[ -n $pid ]]; then
+            print "Pid: ${pid}";
+            print "Port: ${port}";
+            print "Kill process? (y/n)";
+            read kill_choice;
+            if [[ $kill_choice == "y" ]]; then
+                sudo kill $pid;
+            fi
+        else;
+            print "Port #${port}Not in use."
+        fi
+    }
+    alias gpup='get_process_using_port'
 # ------ No Correct ------#
     # alias subl='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 2>&1 > /dev/null &'
     # alias subl='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 > /dev/null 2>&1'
@@ -312,6 +362,17 @@
    # alias ctags="`brew --prefix`/bin/ctags"
     alias diff='colordiff'
     alias cls='clear'
+    alias ctags="`brew --prefix`/bin/ctags"
+    alias click_off='crontab -r'
+    alias click='~/workspaces/scripts/click'
+    alias click_cron='print "*/2 * * * * _click 50 450"'
+    alias click_on='click_cron > /tmp/click.crontab; crontab /tmp/click.crontab; rm /tmp/click.crontab'
+    alias log_it=
+    _click() {
+        click_log='/Users/michaelclark/workspaces/configs/Cron/logs/click.log';
+        print "`date`:: Calling click..." >> $click_log;
+        click -x $1 -y $2;
+    }
 
 #------ CD ------ #
     alias ...='cd ../..'
@@ -332,4 +393,4 @@
     alias l='ls -la'
     alias ll='ls -l'
     alias la='ls -lA'
-    alias sl=ls 
+    alias sl=ls
